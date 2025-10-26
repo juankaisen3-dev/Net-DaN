@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NetVerse Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(-45deg, #0f0f0f, #1c1c1c, #ff004f, #ffcc00);
+      background-size: 400% 400%;
+      animation: gradientFlow 12s ease infinite;
+      color: white;
+    }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .login-box {
+      max-width: 420px;
+      margin: 80px auto;
+      padding: 30px;
+      background-color: rgba(18, 18, 18, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 0, 80, 0.3);
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ff004f;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .btn-netverse {
+      background-color: #ff004f;
+      border: none;
+    }
+    .btn-netverse:hover {
+      background-color: #ff3366;
+    }
+    .toggle-link {
+      color: #ffcc00;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <div class="logo">NetVerse</div>
+
+    <!-- Connexion -->
+    <form id="loginForm">
+      <div class="mb-3">
+        <label for="loginEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="loginEmail" required />
+      </div>
+      <div class="mb-3">
+        <label for="loginPassword" class="form-label">Mot de passe</label>
+        <input type="password" class="form-control" id="loginPassword" required />
+      </div>
+      <button type="submit" class="btn btn-netverse w-100">Se connecter</button>
+      <div id="loginError" class="text-danger mt-2 text-center" style="display: none;">Identifiants incorrects</div>
+    </form>
+
+    <!-- Inscription -->
+    <form id="signupForm" style="display: none;">
+      <div class="mb-3">
+        <label for="signupEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="signupEmail" required />
+      </div>
+      <div class="mb-3">
+        <label for="signupPassword" class="form-label">Mot de passe</label>
+        <input type="password" class="form-control" id="signupPassword" required />
+      </div>
+      <button type="submit" class="btn btn-netverse w-100">Créer un compte</button>
+      <div id="signupSuccess" class="text-success mt-2 text-center fade-in" style="display: none;"></div>
+    </form>
+
+    <div class="text-center mt-3">
+      <span class="toggle-link" onclick="toggleForms()">Créer un compte / Se connecter</span>
+    </div>
+  </div>
+
+  <script>
+    let users = JSON.parse(localStorage.getItem("netverseUsers")) || [
+      { email: "juan@netverse.com", password: "juanverse" }
+    ];
+
+    function toggleForms() {
+      document.getElementById("loginForm").style.display =
+        document.getElementById("loginForm").style.display === "none" ? "block" : "none";
+      document.getElementById("signupForm").style.display =
+        document.getElementById("signupForm").style.display === "none" ? "block" : "none";
+      document.getElementById("loginError").style.display = "none";
+      document.getElementById("signupSuccess").style.display = "none";
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+      const match = users.find(u => u.email === email && u.password === password);
+      if (match) {
+        window.location.href = "dashboard.html";
+      } else {
+        document.getElementById("loginError").style.display = "block";
+      }
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+      users.push({ email, password });
+      localStorage.setItem("netverseUsers", JSON.stringify(users));
+
+      const successMsg = document.getElementById("signupSuccess");
+      successMsg.textContent = "✅ Compte créé avec succès ! Redirection dans 3 secondes...";
+      successMsg.style.display = "block";
+      successMsg.classList.add("fade-in");
+
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 3000);
+    });
+  </script>
+
+</body>
+</html>
