@@ -3,139 +3,641 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NetVerse Login</title>
+  <title>NetVerse - Streaming </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(-45deg, #0f0f0f, #1c1c1c, #ff004f, #ffcc00);
-      background-size: 400% 400%;
-      animation: gradientFlow 12s ease infinite;
-      color: white;
+    :root {
+      --netflix-red: #e50914;
+      --netflix-dark: #141414;
+      --netflix-gray: #2c2c2c;
+      --netflix-light: #f5f5f1;
     }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: linear-gradient(-45deg, #000000, #1a1a1a, #2d2d2d, #000000);
+      background-size: 400% 400%;
+      animation: gradientFlow 15s ease infinite;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
     @keyframes gradientFlow {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    .login-box {
-      max-width: 420px;
-      margin: 80px auto;
-      padding: 30px;
-      background-color: rgba(18, 18, 18, 0.9);
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(255, 0, 80, 0.3);
+    
+    /* Effet de particules animées */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
     }
-    .logo {
-      font-size: 2rem;
+    
+    .particle {
+      position: absolute;
+      background: rgba(229, 9, 20, 0.3);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-1000%) translateX(1000%) rotate(720deg); opacity: 0; }
+    }
+    
+    /* Header Netflix */
+    .netflix-header {
+      padding: 20px 50px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+    
+    .netflix-logo {
+      font-size: 2.5rem;
       font-weight: bold;
-      color: #ff004f;
-      text-align: center;
-      margin-bottom: 20px;
+      color: var(--netflix-red);
+      text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
     }
-    .btn-netverse {
-      background-color: #ff004f;
+    
+    /* Container principal */
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .login-box {
+      max-width: 450px;
+      width: 100%;
+      padding: 60px 50px;
+      background-color: rgba(20, 20, 20, 0.95);
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .login-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--netflix-red);
+    }
+    
+    /* Onglets */
+    .nav-tabs {
+      border: none;
+      margin-bottom: 30px;
+      display: flex;
+    }
+    
+    .nav-tabs .nav-link {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #8c8c8c;
+      padding: 15px;
+      font-weight: 500;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-tabs .nav-link.active {
+      color: white;
+      background: transparent;
       border: none;
     }
-    .btn-netverse:hover {
-      background-color: #ff3366;
+    
+    .nav-tabs .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--netflix-red);
     }
-    .toggle-link {
-      color: #ffcc00;
-      cursor: pointer;
+    
+    .nav-tabs .nav-link:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    /* Formulaire */
+    .form-label {
+      color: #8c8c8c;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+    
+    .form-control {
+      background: rgba(45, 45, 45, 0.8);
+      border: 1px solid #333;
+      border-radius: 4px;
+      color: white;
+      padding: 12px 15px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      background: rgba(60, 60, 60, 0.8);
+      border-color: #555;
+      color: white;
+      box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.3);
+    }
+    
+    .btn-netverse {
+      background: var(--netflix-red);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-netverse:hover {
+      background: #f40612;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(229, 9, 20, 0.4);
+    }
+    
+    .btn-netverse:active {
+      transform: translateY(0);
+    }
+    
+    .btn-netverse::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+    
+    .btn-netverse:focus:not(:active)::after {
+      animation: ripple 1s ease-out;
+    }
+    
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(20, 20);
+        opacity: 0;
+      }
+    }
+    
+    /* Messages d'erreur/succès */
+    .alert-message {
+      padding: 12px 15px;
+      border-radius: 4px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .alert-error {
+      background: rgba(229, 9, 20, 0.2);
+      border: 1px solid rgba(229, 9, 20, 0.5);
+      color: #ff6b6b;
+    }
+    
+    .alert-success {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid rgba(76, 175, 80, 0.5);
+      color: #81c784;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Lien mot de passe oublié */
+    .forgot-password {
+      text-align: right;
+      margin-top: 10px;
+    }
+    
+    .forgot-password a {
+      color: #8c8c8c;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+    
+    .forgot-password a:hover {
+      color: var(--netflix-red);
       text-decoration: underline;
     }
+    
+    /* Footer */
+    .login-footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #8c8c8c;
+      font-size: 0.9rem;
+    }
+    
+    .login-footer a {
+      color: #8c8c8c;
+      text-decoration: none;
+    }
+    
+    .login-footer a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+    
+    /* Modal */
+    .modal-content {
+      background: var(--netflix-dark);
+      color: white;
+      border-radius: 8px;
+      border: none;
+    }
+    
+    .modal-header {
+      border-bottom: 1px solid #333;
+    }
+    
+    .modal-footer {
+      border-top: 1px solid #333;
+    }
+    
+    /* Responsive */
+    @media (max-width: 576px) {
+      .netflix-header {
+        padding: 20px;
+      }
+      
+      .netflix-logo {
+        font-size: 2rem;
+      }
+      
+      .login-box {
+        padding: 40px 25px;
+      }
+      
+      .nav-tabs .nav-link {
+        font-size: 1rem;
+        padding: 12px;
+      }
+    }
+    
+    /* Animation d'entrée */
     .fade-in {
       animation: fadeIn 0.6s ease-in-out forwards;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    
+    /* Loader */
+    .loader {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-
-  <div class="login-box">
-    <div class="logo">NetVerse</div>
-
-    <!-- Connexion -->
-    <form id="loginForm">
-      <div class="mb-3">
-        <label for="loginEmail" class="form-label">Email</label>
-        <input type="email" class="form-control" id="loginEmail" required />
+  <!-- Effet de particules animées -->
+  <div class="particles" id="particles"></div>
+  
+  <!-- Header -->
+  <div class="netflix-header">
+    <div class="netflix-logo">
+      <i class="fas fa-play-circle"></i> NetVerse
+    </div>
+  </div>
+  
+  <!-- Container principal -->
+  <div class="login-container">
+    <div class="login-box fade-in">
+      <!-- Onglets -->
+      <ul class="nav nav-tabs" id="authTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="true">
+            <i class="fas fa-sign-in-alt"></i> Connexion
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup" type="button" role="tab" aria-controls="signup" aria-selected="false">
+            <i class="fas fa-user-plus"></i> Inscription
+          </button>
+        </li>
+      </ul>
+      
+      <!-- Contenu des onglets -->
+      <div class="tab-content" id="authTabsContent">
+        <!-- Onglet Connexion -->
+        <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="loginEmail" placeholder="votre@email.com" required />
+            </div>
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label">Mot de passe</label>
+              <input type="password" class="form-control" id="loginPassword" placeholder="Votre mot de passe" required />
+            </div>
+            
+            <div class="forgot-password">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Mot de passe oublié ?</a>
+            </div>
+            
+            <button type="submit" class="btn btn-netverse w-100" id="loginBtn">
+              <span id="loginText">Se connecter</span>
+              <div class="loader" id="loginLoader"></div>
+            </button>
+            
+            <div class="alert-message alert-error" id="loginError">
+              <i class="fas fa-exclamation-circle"></i> Email ou mot de passe incorrect
+            </div>
+          </form>
+        </div>
+        
+        <!-- Onglet Inscription -->
+        <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+          <form id="signupForm">
+            <div class="mb-3">
+              <label for="signupEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="signupEmail" placeholder="votre@email.com" required />
+            </div>
+            <div class="mb-3">
+              <label for="signupPassword" class="form-label">Mot de passe</label>
+              <input type="password" class="form-control" id="signupPassword" placeholder="Créez un mot de passe sécurisé" required />
+              <div class="form-text text-muted">Minimum 8 caractères</div>
+            </div>
+            <div class="mb-3">
+              <label for="signupConfirmPassword" class="form-label">Confirmer le mot de passe</label>
+              <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirmez votre mot de passe" required />
+            </div>
+            
+            <button type="submit" class="btn btn-netverse w-100" id="signupBtn">
+              <span id="signupText">Créer un compte</span>
+              <div class="loader" id="signupLoader"></div>
+            </button>
+            
+            <div class="alert-message alert-success" id="signupSuccess">
+              <i class="fas fa-check-circle"></i> Compte créé avec succès !
+            </div>
+            
+            <div class="alert-message alert-error" id="signupError">
+              <i class="fas fa-exclamation-circle"></i> Les mots de passe ne correspondent pas
+            </div>
+          </form>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="loginPassword" class="form-label">Mot de passe</label>
-        <input type="password" class="form-control" id="loginPassword" required />
+      
+      <div class="login-footer">
+        <p>En vous connectant, vous acceptez nos <a href="#">Conditions d'utilisation</a> et notre <a href="#">Politique de confidentialité</a>.</p>
       </div>
-      <button type="submit" class="btn btn-netverse w-100">Se connecter</button>
-      <div id="loginError" class="text-danger mt-2 text-center" style="display: none;">Identifiants incorrects</div>
-    </form>
-
-    <!-- Inscription -->
-    <form id="signupForm" style="display: none;">
-      <div class="mb-3">
-        <label for="signupEmail" class="form-label">Email</label>
-        <input type="email" class="form-control" id="signupEmail" required />
+    </div>
+  </div>
+  
+  <!-- Modal Mot de passe oublié -->
+  <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="forgotPasswordModalLabel">
+            <i class="fas fa-key"></i> Réinitialiser le mot de passe
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Entrez votre adresse email pour recevoir un lien de réinitialisation.</p>
+          <form id="forgotPasswordForm">
+            <div class="mb-3">
+              <label for="forgotEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="forgotEmail" placeholder="votre@email.com" required />
+            </div>
+            <button type="submit" class="btn btn-netverse w-100">
+              Envoyer le lien
+            </button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="signupPassword" class="form-label">Mot de passe</label>
-        <input type="password" class="form-control" id="signupPassword" required />
-      </div>
-      <button type="submit" class="btn btn-netverse w-100">Créer un compte</button>
-      <div id="signupSuccess" class="text-success mt-2 text-center fade-in" style="display: none;"></div>
-    </form>
-
-    <div class="text-center mt-3">
-      <span class="toggle-link" onclick="toggleForms()">Créer un compte / Se connecter</span>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Initialisation des utilisateurs
     let users = JSON.parse(localStorage.getItem("netverseUsers")) || [
       { email: "juan@netverse.com", password: "juanverse" }
     ];
-
-    function toggleForms() {
-      document.getElementById("loginForm").style.display =
-        document.getElementById("loginForm").style.display === "none" ? "block" : "none";
-      document.getElementById("signupForm").style.display =
-        document.getElementById("signupForm").style.display === "none" ? "block" : "none";
-      document.getElementById("loginError").style.display = "none";
-      document.getElementById("signupSuccess").style.display = "none";
+    
+    // Création des particules animées
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Taille aléatoire
+        const size = Math.random() * 20 + 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Position initiale aléatoire
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Délai d'animation aléatoire
+        particle.style.animationDelay = `${Math.random() * 15}s`;
+        
+        // Durée d'animation aléatoire
+        const duration = 15 + Math.random() * 20;
+        particle.style.animationDuration = `${duration}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
     }
-
+    
+    // Fonction pour afficher les messages d'erreur/succès
+    function showAlert(elementId, show = true) {
+      const element = document.getElementById(elementId);
+      if (show) {
+        element.style.display = 'block';
+      } else {
+        element.style.display = 'none';
+      }
+    }
+    
+    // Fonction pour afficher le loader
+    function toggleLoader(buttonId, loaderId, textId, show) {
+      const button = document.getElementById(buttonId);
+      const loader = document.getElementById(loaderId);
+      const text = document.getElementById(textId);
+      
+      if (show) {
+        button.disabled = true;
+        loader.style.display = 'block';
+        text.style.display = 'none';
+      } else {
+        button.disabled = false;
+        loader.style.display = 'none';
+        text.style.display = 'inline';
+      }
+    }
+    
+    // Validation du formulaire de connexion
     document.getElementById("loginForm").addEventListener("submit", function (e) {
       e.preventDefault();
+      
       const email = document.getElementById("loginEmail").value.trim();
       const password = document.getElementById("loginPassword").value.trim();
-      const match = users.find(u => u.email === email && u.password === password);
-      if (match) {
-        window.location.href = "dashboard.html";
-      } else {
-        document.getElementById("loginError").style.display = "block";
-      }
+      
+      // Afficher le loader
+      toggleLoader('loginBtn', 'loginLoader', 'loginText', true);
+      
+      // Simulation d'une requête API
+      setTimeout(() => {
+        const match = users.find(u => u.email === email && u.password === password);
+        
+        if (match) {
+          // Redirection vers le tableau de bord
+          window.location.href = "dashboard.html";
+        } else {
+          // Afficher l'erreur
+          showAlert('loginError', true);
+          toggleLoader('loginBtn', 'loginLoader', 'loginText', false);
+        }
+      }, 1500);
     });
-
+    
+    // Validation du formulaire d'inscription
     document.getElementById("signupForm").addEventListener("submit", function (e) {
       e.preventDefault();
+      
       const email = document.getElementById("signupEmail").value.trim();
       const password = document.getElementById("signupPassword").value.trim();
-      users.push({ email, password });
-      localStorage.setItem("netverseUsers", JSON.stringify(users));
-
-      const successMsg = document.getElementById("signupSuccess");
-      successMsg.textContent = "✅ Compte créé avec succès ! Redirection dans 3 secondes...";
-      successMsg.style.display = "block";
-      successMsg.classList.add("fade-in");
-
+      const confirmPassword = document.getElementById("signupConfirmPassword").value.trim();
+      
+      // Cacher les messages d'erreur précédents
+      showAlert('signupError', false);
+      showAlert('signupSuccess', false);
+      
+      // Validation des mots de passe
+      if (password !== confirmPassword) {
+        showAlert('signupError', true);
+        return;
+      }
+      
+      // Vérifier si l'utilisateur existe déjà
+      const userExists = users.find(u => u.email === email);
+      if (userExists) {
+        document.getElementById('signupError').innerHTML = '<i class="fas fa-exclamation-circle"></i> Un compte avec cet email existe déjà';
+        showAlert('signupError', true);
+        return;
+      }
+      
+      // Afficher le loader
+      toggleLoader('signupBtn', 'signupLoader', 'signupText', true);
+      
+      // Simulation d'une requête API
       setTimeout(() => {
-        window.location.href = "dashboard.html";
-      }, 3000);
+        // Ajouter le nouvel utilisateur
+        users.push({ email, password });
+        localStorage.setItem("netverseUsers", JSON.stringify(users));
+        
+        // Afficher le message de succès
+        showAlert('signupSuccess', true);
+        toggleLoader('signupBtn', 'signupLoader', 'signupText', false);
+        
+        // Réinitialiser le formulaire
+        document.getElementById("signupForm").reset();
+        
+        // Redirection après 3 secondes
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 3000);
+      }, 1500);
+    });
+    
+    // Validation du formulaire de mot de passe oublié
+    document.getElementById("forgotPasswordForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      
+      const email = document.getElementById("forgotEmail").value.trim();
+      
+      // Vérifier si l'email existe
+      const userExists = users.find(u => u.email === email);
+      
+      if (userExists) {
+        alert(`Un lien de réinitialisation a été envoyé à ${email}`);
+        // Fermer le modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('forgotPasswordModal'));
+        modal.hide();
+      } else {
+        alert("Aucun compte n'est associé à cet email");
+      }
+    });
+    
+    // Réinitialiser les messages d'erreur lors du changement d'onglet
+    document.getElementById('authTabs').addEventListener('click', function() {
+      showAlert('loginError', false);
+      showAlert('signupError', false);
+      showAlert('signupSuccess', false);
+    });
+    
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', function() {
+      createParticles();
     });
   </script>
-
 </body>
 </html>
