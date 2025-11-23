@@ -17,7 +17,8 @@ class User {
 
     public function register() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET email=:email, password=:password, full_name=:full_name, subscription='basic', created_at=NOW()";
+                  SET email=:email, password=:password, full_name=:full_name, 
+                  subscription='basic', created_at=NOW()";
         
         $stmt = $this->conn->prepare($query);
         
@@ -30,6 +31,7 @@ class User {
         $stmt->bindParam(":full_name", $this->full_name);
         
         if($stmt->execute()) {
+            $this->id = $this->conn->lastInsertId();
             return true;
         }
         return false;
